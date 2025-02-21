@@ -15,7 +15,10 @@ def get_users():
     return [{"name": "Alice"}, {"name": "Bob"}]
 
 
-
+# New endpoint
+@app.get("/hello")
+def say_hello():
+    return {"message": "Hello from the dev branch!"}
 
 
 

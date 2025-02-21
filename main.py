@@ -19,7 +19,9 @@ def say_hello():
     return {"message": "Hello from the dev branch!"}
 
 
-
+@app.get("/xyz")
+def feature_xyz():
+    return {"message": "This is new feature xyz created in xyz branch"}
 
 
 

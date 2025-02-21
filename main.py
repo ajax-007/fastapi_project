@@ -8,8 +8,6 @@ def read_root():  #  A function that runs when a request is made to /.
     return {"message": "Hello, FastAPI! from main branch after resolving conflicts"}  # Return JSON response
 
 
-
-
 @app.get("/users/")
 def get_users():
     return [{"name": "Alice"}, {"name": "Bob"}]
@@ -19,6 +17,15 @@ def get_users():
 @app.get("/hello")
 def say_hello():
     return {"message": "Hello from the dev branch!"}
+
+
+@app.get("/xyz")
+def feature_xyz():
+    return {"message": "This is new feature xyz created in xyz branch"}
+
+
+
+
 
 
 

@@ -4,7 +4,9 @@ app = FastAPI()  # Create a FastAPI instance
 
 @app.get("/")  # Defines an API route at /. (GET request)
 def read_root():  #  A function that runs when a request is made to /.
-    return {"message": "Hello, FastAPI! from main branch"}  # Return JSON response
+
+    return {"message": "Hello, FastAPI! from main branch after resolving conflicts"}  # Return JSON response
+
 
 
 

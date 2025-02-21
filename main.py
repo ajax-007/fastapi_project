@@ -24,6 +24,9 @@ def feature_xyz():
     return {"message": "This is new feature xyz created in xyz branch"}
 
 
+@app.get("/users/bill")
+def get_users():
+    return [{"name": "Billy"}]
 
 
 

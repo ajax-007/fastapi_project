@@ -33,9 +33,10 @@ def get_users():
 def main_xyz():
     return {"message": "This is new feature xyz created in main branch"}
 
-
-
-
+# in browser we have to write:  /items/?name=Laptop&price=999.99
+@app.get("/items/")
+def read_item(name: str, price: float):
+    return {"name": name, "price": price}
 
 
 

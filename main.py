@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from pydantic import BaseModel, Field
 
 app = FastAPI()  # Create a FastAPI instance
 
@@ -39,6 +40,19 @@ def read_item(name: str, price: float):
     return {"name": name, "price": price}
 
 
+class Item(BaseModel):
+    name: str = Field(min_length=3, max_length=50)
+    price: float = Field(gt=0)
+    in_stock: bool
+
+
+class ItemResponse(BaseModel):
+    name: str
+    price: float
+
+@app.post("/items/", response_model=ItemResponse)
+def create_item(item: Item):
+    return item  # FastAPI automatically filters unwanted fields!
 
 
 

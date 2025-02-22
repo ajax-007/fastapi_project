@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 
 app = FastAPI()  # Create a FastAPI instance
@@ -80,7 +80,8 @@ class ItemUpdate(BaseModel):
 @app.put("/items/{item_id}")  # Defines a PUT endpoint with a path parameter (item_id).
 def update_item(item_id: int, item: ItemUpdate):
     if item_id not in items:
-        return {"error": "Item not found"}
+        # return {"error": "Item not found"}
+        raise HTTPException(status_code=404, detail="Item not found")  # Custom error
 
     # Update the item
     items[item_id] = item.dict()  # Updates the item storage.
@@ -94,7 +95,8 @@ def update_item(item_id: int, item: ItemUpdate):
 @app.delete("/items/{item_id}")
 def delete_item(item_id: int):
     if item_id not in items:
-        return {"error": "Item not found"}
+        # return {"error": "Item not found"}
+        raise HTTPException(status_code=404, detail="Item not found")  # Custom error
 
     deleted_item = items.pop(item_id)
     return {"message": "Item deleted", "deleted_item": deleted_item}

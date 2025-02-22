@@ -34,7 +34,7 @@ def get_users():
 def main_xyz():
     return {"message": "This is new feature xyz created in main branch"}
 
-# in browser we have to write:  /items/?name=Laptop&price=999.99
+# in browser we have to write:  /items/?name=Laptop&price=999.99 these are query parameters
 @app.get("/items/")
 def read_item(name: str, price: float):
     return {"name": name, "price": price}
@@ -55,9 +55,49 @@ def create_item(item: Item):
     return item  # FastAPI automatically filters unwanted fields!
 
 
+# Sample data storage (simulating a database)
+items = {
+    1: {"name": "Laptop", "price": 1200.99, "in_stock": True},
+    2: {"name": "Smartphone", "price": 799.99, "in_stock": True},
+}
 
 
+@app.get("/item/{item_id}")     # {item_id} is a path parameter
+def get_item(item_id: int):
+    return {"item_id": item_id, "item": items[item_id]}
 
+
+# ---------------------------------- implementing put with path parameter ------------------------------
+
+
+# Request Body Model
+class ItemUpdate(BaseModel):
+    name: str
+    price: float
+    in_stock: bool
+
+
+@app.put("/items/{item_id}")  # Defines a PUT endpoint with a path parameter (item_id).
+def update_item(item_id: int, item: ItemUpdate):
+    if item_id not in items:
+        return {"error": "Item not found"}
+
+    # Update the item
+    items[item_id] = item.dict()  # Updates the item storage.
+    return {"message": "Item updated", "item": items[item_id]}
+
+# item_id: int → Extracts item_id from the URL path.
+# item: ItemUpdate → Parses the request body using Pydantic.
+
+# --------------------------------------------- delete -----------------------------------------------
+
+@app.delete("/items/{item_id}")
+def delete_item(item_id: int):
+    if item_id not in items:
+        return {"error": "Item not found"}
+
+    deleted_item = items.pop(item_id)
+    return {"message": "Item deleted", "deleted_item": deleted_item}
 
 
 

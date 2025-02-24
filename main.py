@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
+from routers import item_file  # Import the router
 
 app = FastAPI()  # Create a FastAPI instance
 
@@ -67,6 +68,11 @@ def get_item(item_id: int):
     return {"item_id": item_id, "item": items[item_id]}
 
 
+# Register the router
+app.include_router(item_file.router)
+# print(item_file.router.variable1)
+
+
 # ---------------------------------- implementing put with path parameter ------------------------------
 
 
@@ -106,6 +112,9 @@ def delete_item(item_id: int):
 
 
 
+@app.get("/abc")
+def feature_abc():
+    return {"message": "This is new feature abc created in main branch"}
 
 
 

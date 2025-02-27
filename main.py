@@ -148,6 +148,8 @@ def get_secure_data(api_key: str = Depends(verify_api_key)):
 
 
 
+# Test the authentication, (we can send the header through the swagger ui or other tools,
+# Headers can’t be sent from the browser)
 
 
 

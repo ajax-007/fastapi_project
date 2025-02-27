@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Depends, Header
 from pydantic import BaseModel, Field
 from routers import item_file  # Import the router
 
@@ -109,12 +109,43 @@ def delete_item(item_id: int):
 
 
 
-
-
-
 @app.get("/abc")
 def feature_abc():
     return {"message": "This is new feature abc created in main branch"}
+
+
+# --------------------------------------------- dependency injection ----------------------------------------------
+
+# Dependency function
+def common_query_parameters():
+    return {"q": "default", "limit": 100}
+
+# Inject dependency
+@app.get("/depends/")
+def read_items(params: dict = Depends(common_query_parameters)):
+    return {"parameters": params}
+
+# ----------------------------
+
+def pagination(limit: int = 10, offset: int = 0):
+    return {"limit": limit, "offset": offset}
+
+@app.get("/products/")
+def get_products(pagination: dict = Depends(pagination)):
+    return pagination
+
+# -----------------------------
+
+# Define the dependency
+def verify_api_key(api_key: str = Header(None)):
+    if api_key != "mysecretkey":  # Replace with your actual key
+        raise HTTPException(status_code=403, detail="Invalid API Key")
+    return api_key
+
+@app.get("/secure-data/")
+def get_secure_data(api_key: str = Depends(verify_api_key)):
+    return {"message": "Access granted!", "api_key": api_key}
+
 
 
 
